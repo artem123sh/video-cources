@@ -1,0 +1,16 @@
+div {
+    padding: 0 calc(100vw * 0.05);
+    background-color: white;
+    margin-left: calc(-100vw * 0.05);
+    margin-right: calc(-100vw * 0.05);
+}
+
+.bc-item {
+    margin: 1.5rem 0;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.active {
+   font-weight: bold;
+}

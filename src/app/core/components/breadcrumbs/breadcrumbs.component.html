@@ -1,1 +1,4 @@
-<p>breadcrumbs works!</p>
+<div *ngFor="let breadcrumb of breadcrumbs; let i = index">
+    <span class="bc-item" [class.active]="i+1==breadcrumbs.length">{{breadcrumb}}</span>
+    <span class="primary-color">{{i + 1 < breadcrumbs.length ? ' / ' : ''}}</span>
+</div>

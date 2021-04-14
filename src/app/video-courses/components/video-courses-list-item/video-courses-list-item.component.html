@@ -1,0 +1,26 @@
+<mat-card>
+  <mat-card-title>{{course.title}}</mat-card-title>
+  <mat-card-subtitle>
+    <div class="subtitle">
+      <mat-icon class="subtitle-icon">schedule</mat-icon>
+      <span>{{course.duration | duration}}</span>
+    </div>
+    <div class="subtitle">
+      <mat-icon class="subtitle-icon">calendar_today</mat-icon>
+      {{course.createdDate | date: 'dd, MMM yyyy'}}
+    </div>
+  </mat-card-subtitle>
+  <mat-card-content>
+    <div class="description">{{course.description}}</div>
+    <div class="actions-container">
+      <button class="action-btn" mat-flat-button color="primary" (click)="handleEditClick()">
+        <mat-icon class="action-icon">edit</mat-icon>
+        Edit
+      </button>
+      <button class="action-btn" mat-flat-button color="primary" (click)="handleDeleteClick()">
+        <mat-icon class="action-icon">delete</mat-icon>
+        Delete
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

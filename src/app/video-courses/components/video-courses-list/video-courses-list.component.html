@@ -1,0 +1,6 @@
+<vc-video-courses-list-item
+  *ngFor="let course of courses; trackBy: identify"
+  [course]="course"
+  (deleteCourse)="deleteCourse($event)"
+  (editCourse)="editCourse($event)"
+></vc-video-courses-list-item>
