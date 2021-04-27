@@ -11,6 +11,7 @@ describe('VideoCoursesListItemComponent', () => {
   let expectedCourse: Course;
 
   beforeEach(async () => {
+    spyOn(HourMinutesDuration.prototype, 'transform').and.returnValue('test duration');
     await TestBed.configureTestingModule({
       declarations: [VideoCoursesListItemComponent, HourMinutesDuration],
     }).compileComponents();
@@ -35,8 +36,9 @@ describe('VideoCoursesListItemComponent', () => {
   });
 
   it('should display duration correctly', () => {
+    expect(HourMinutesDuration.prototype.transform).toHaveBeenCalledOnceWith(65);
     const duration = fixture.debugElement.query(By.css('span')).nativeElement.textContent;
-    expect(duration).toBe('1h 5min');
+    expect(duration).toBe('test duration');
   });
 
   it('should emit edit event', () => {
