@@ -1,3 +1,11 @@
-<vc-video-courses-search></vc-video-courses-search>
-<vc-video-courses-list></vc-video-courses-list>
-<vc-video-courses-load-more></vc-video-courses-load-more>
+<vc-video-courses-search (searchCourse)="search($event)"></vc-video-courses-search>
+<vc-video-courses-list-item
+  *ngFor="let course of (courses | sort:'createdDate'); trackBy: identify"
+  [course]="course"
+  (deleteCourse)="deleteCourse($event)"
+  (editCourse)="editCourse($event)"
+></vc-video-courses-list-item>
+<vc-video-courses-load-more *ngIf="courses.length > 2; else elseBlock"></vc-video-courses-load-more>
+<ng-template #elseBlock>
+  <vc-video-courses-no-data *ngIf="!courses.length;"></vc-video-courses-no-data>
+</ng-template>

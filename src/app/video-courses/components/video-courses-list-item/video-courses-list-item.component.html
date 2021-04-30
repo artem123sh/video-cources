@@ -1,5 +1,7 @@
-<mat-card>
-  <mat-card-title>{{course.title}}</mat-card-title>
+<mat-card [vcHighlightBorders]="course.createdDate" [ngClass]="{'top-rated': course.isTopRated}">
+  <mat-card-title>{{course.title | titlecase}}
+    <mat-icon *ngIf="course.isTopRated" class="top-rated-icon">star</mat-icon>
+  </mat-card-title>
   <mat-card-subtitle>
     <div class="subtitle">
       <mat-icon class="subtitle-icon">schedule</mat-icon>

@@ -1,10 +1,17 @@
 <div class="container">
-    <input [(ngModel)]="searchInput" placeholder="Type to search">
-    <button id="search" mat-flat-button color="accent" (click)="handleSearch()">Search</button>
-    <div class="add">
-        <button mat-flat-button color="primary">
-            <mat-icon>add_circle_outline</mat-icon>
-            Add Course
-        </button>
-    </div>
+    <form method="get">
+        <input
+            type="search"
+            name="q"
+            required="required"
+            [(ngModel)]="searchInput"
+            placeholder="Type to search">
+        <button id="search" mat-flat-button color="accent" (click)="handleSearch()">Search</button>
+        <div class="add">
+            <button mat-flat-button color="primary">
+                <mat-icon>add_circle_outline</mat-icon>
+                Add Course
+            </button>
+        </div>
+    </form>
 </div>
