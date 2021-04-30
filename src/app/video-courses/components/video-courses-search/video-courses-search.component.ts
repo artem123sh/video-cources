@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'vc-video-courses-search',
@@ -8,7 +8,10 @@ import { Component } from '@angular/core';
 export class VideoCoursesSearchComponent {
   public searchInput: string;
 
+  @Output()
+  public searchCourse = new EventEmitter();
+
   public handleSearch() {
-    console.log(this.searchInput);
+    this.searchCourse.emit(this.searchInput);
   }
 }
