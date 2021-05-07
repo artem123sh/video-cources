@@ -1,6 +1,7 @@
 <vc-header></vc-header>
 <div class="main-container">
-    <vc-breadcrumbs></vc-breadcrumbs>
-    <vc-video-courses></vc-video-courses>
+    <vc-breadcrumbs *vcIfAuthenticated="true"></vc-breadcrumbs>
+    <vc-video-courses *vcIfAuthenticated="true"></vc-video-courses>
+    <vc-login *vcIfAuthenticated="false"></vc-login>
 </div>
 <vc-footer></vc-footer>

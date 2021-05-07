@@ -2,10 +2,12 @@
     <mat-icon class="logo">play_circle_outline</mat-icon>
     <span>VIDEO COURSE</span>
     <span class="spacer"></span>
-    <mat-icon>perm_identity</mat-icon>
-    <span class="login">{{userName}}</span>
-     <button mat-button>
-        <mat-icon>logout</mat-icon>
-        Log out
-    </button>
+    <div *vcIfAuthenticated="true" class="actions">
+        <mat-icon>perm_identity</mat-icon>
+        <span class="login">{{userName}}</span>
+        <button mat-button (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Log out
+        </button>
+    </div>
 </mat-toolbar>
