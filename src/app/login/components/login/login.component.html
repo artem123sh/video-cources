@@ -1,0 +1,17 @@
+<div class="container">
+    <mat-card>
+        <mat-card-title>Login</mat-card-title>
+        <mat-card-content>
+            <form>
+                <mat-label>E-mail</mat-label>
+                <input [(ngModel)]="email" matInput required name="email">
+                <mat-label>Password</mat-label>
+                <input [(ngModel)]="password" matInput required type="password" name="password">
+            </form>
+            <div class="actions">
+                <a href="/">Forgot password?</a>
+                <button class="action-btn" mat-flat-button color="primary" (click)="login()">Login</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

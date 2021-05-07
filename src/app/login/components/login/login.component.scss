@@ -1,0 +1,26 @@
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+mat-card-title {
+    margin-bottom: 1.5rem;
+}
+
+input {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+mat-label {
+    margin-bottom: 0.5rem;
+}
+
+.actions {
+    margin: 1rem 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
