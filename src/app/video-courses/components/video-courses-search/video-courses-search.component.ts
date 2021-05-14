@@ -11,7 +11,14 @@ export class VideoCoursesSearchComponent {
   @Output()
   public searchCourse = new EventEmitter();
 
+  @Output()
+  public addCourse = new EventEmitter();
+
   public handleSearch() {
     this.searchCourse.emit(this.searchInput);
+  }
+
+  public handleAddCourse() {
+    this.addCourse.emit();
   }
 }

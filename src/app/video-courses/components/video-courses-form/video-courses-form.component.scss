@@ -1,0 +1,42 @@
+
+form {
+    width: 100%;
+}
+
+.date-input {
+    width: 15rem;
+}
+
+.picker {
+    position: absolute;
+    left: 15rem;
+}
+
+.label {
+    display: block;
+    margin-top: 1rem;
+}
+
+textarea {
+    height: 5rem;
+}
+
+.fullWidth {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+mat-label {
+    margin-bottom: 0.5rem;
+}
+
+.actions {
+    margin: 1rem 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+button {
+    margin-left: 1rem;
+}

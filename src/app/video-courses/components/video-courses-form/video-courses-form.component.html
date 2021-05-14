@@ -1,0 +1,20 @@
+<form>
+    <mat-label class="label">Title:</mat-label>
+    <input class="fullWidth" [(ngModel)]="title" required name="title" placeholder="Text input">
+    <mat-label class="label">Description:</mat-label>
+    <textarea class="fullWidth" [(ngModel)]="description" required name="description" placeholder="Add description"></textarea>
+    <mat-label class="label">Duration:</mat-label>
+    <input class="label" [(ngModel)]="duration" required name="duration" type="number" placeholder="minutes">
+    <div>
+        <mat-label class="label">Date:</mat-label>
+        <input class="date-input" [matDatepicker]="picker" [(ngModel)]="date" matInput required name="date" placeholder="MM/DD/YYYY">
+        <mat-datepicker-toggle class="picker" matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #picker></mat-datepicker>
+    </div>
+    <mat-label class="label">Authors:</mat-label>
+    <input class="field" [(ngModel)]="authors" required name="authors" placeholder="Start typing">
+    <div class="actions">
+        <button mat-stroked-button (click)="cancel()">Cancel</button>
+        <button type="submit" mat-flat-button color="accent" (click)="save()">Save</button>
+    </div>
+</form>

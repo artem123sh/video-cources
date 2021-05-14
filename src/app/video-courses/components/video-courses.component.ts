@@ -13,6 +13,8 @@ export class VideoCoursesComponent implements OnInit {
 
   public courses: Course[];
 
+  public isAddNewCourse = false;
+
   constructor(private filterPipe: FilterPipe, private videoCoursesService: VideoCoursesService) {}
 
   ngOnInit(): void {
@@ -22,6 +24,16 @@ export class VideoCoursesComponent implements OnInit {
   // eslint-disable-next-line class-methods-use-this
   identify(index: number, course: Course) {
     return course.id;
+  }
+
+  public toggleNewCourse() {
+    this.isAddNewCourse = !this.isAddNewCourse;
+  }
+
+  public addCourse(course: Omit<Course, 'id'>) {
+    this.videoCoursesService.createItem(course);
+    this.toggleNewCourse();
+    this.getVideoCourses();
   }
 
   public deleteCourse(courseId: string) {
