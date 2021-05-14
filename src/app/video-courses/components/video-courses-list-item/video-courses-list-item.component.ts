@@ -1,10 +1,11 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Course } from '../../shared/models/course.model';
 
 @Component({
   selector: 'vc-video-courses-list-item',
   templateUrl: './video-courses-list-item.component.html',
   styleUrls: ['./video-courses-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VideoCoursesListItemComponent {
   @Input()
