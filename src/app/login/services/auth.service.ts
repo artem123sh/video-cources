@@ -23,7 +23,6 @@ export class AuthService {
   }
 
   login(login: string, password: string): void {
-    console.log(login, password)
     this.storage.set(USER_KEY, { id: uuidv4(), firstName: login, lastName: login });
     this.storage.set(TOKEN_KEY, uuidv4());
     this.isAuth.next(true);

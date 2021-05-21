@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { VideoCoursesService } from '../../services/video-courses.service';
+
 import { Course } from '../../shared/models/course.model';
 
 @Component({
@@ -7,17 +10,14 @@ import { Course } from '../../shared/models/course.model';
   styleUrls: ['./video-courses-add-new.component.scss'],
 })
 export class VideoCoursesAddNewComponent {
-  @Output()
-  public closeAddNewCourse = new EventEmitter();
+  constructor(private videoCoursesService: VideoCoursesService, private router: Router) {}
 
-  @Output()
-  public addNewCourse = new EventEmitter();
-
-  public handleClose() {
-    this.closeAddNewCourse.emit();
+  public addCourse(course: Omit<Course, 'id'>) {
+    this.videoCoursesService.createItem(course);
   }
 
   public handleSave(course: Course) {
-    this.addNewCourse.emit(course);
+    this.videoCoursesService.createItem(course);
+    this.router.navigate(['..']);
   }
 }

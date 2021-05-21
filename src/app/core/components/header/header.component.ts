@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/login/services/auth.service';
 
@@ -7,8 +8,8 @@ import { AuthService } from 'src/app/login/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss', '../shared/shared.style.scss'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService) {}
+export class HeaderComponent {
+  constructor(private router: Router, private authService: AuthService) {}
 
   private sub: Subscription;
 
@@ -31,5 +32,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public logout(): void {
     this.authService.logout();
+    this.router.navigate(['login']);
   }
 }

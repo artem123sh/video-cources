@@ -14,7 +14,7 @@
     <mat-label class="label">Authors:</mat-label>
     <input class="field" [(ngModel)]="authors" required name="authors" placeholder="Start typing">
     <div class="actions">
-        <button mat-stroked-button (click)="cancel()">Cancel</button>
+        <button mat-stroked-button [routerLink]="['..']">Cancel</button>
         <button type="submit" mat-flat-button color="accent" (click)="save()">Save</button>
     </div>
 </form>
