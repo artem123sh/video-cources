@@ -1,7 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { BehaviorSubject } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
+import { Observable, BehaviorSubject } from 'rxjs';
+
+import { switchMap, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { User } from '../shared/models/user.model';
 
 const USER_KEY = 'user';
@@ -12,7 +15,7 @@ const TOKEN_KEY = 'token';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) {}
+  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService, private http: HttpClient) {}
 
   private isAuth: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     this.storage.has(TOKEN_KEY) && !!this.storage.get(TOKEN_KEY),
@@ -22,10 +25,28 @@ export class AuthService {
     return this.storage.get(USER_KEY) || null;
   }
 
-  login(login: string, password: string): void {
-    this.storage.set(USER_KEY, { id: uuidv4(), firstName: login, lastName: login });
-    this.storage.set(TOKEN_KEY, uuidv4());
-    this.isAuth.next(true);
+  getUserToken(): string {
+    return this.storage.get(TOKEN_KEY) || null;
+  }
+
+  login(login: string, password: string): Observable<void> {
+    return this.http
+      .post<{ token: string }>(`${environment.apiUrl}/auth/login`, {
+        login,
+        password,
+      })
+      .pipe(
+        switchMap((token) => {
+          this.storage.set(TOKEN_KEY, token);
+          return this.http.post<any>(`${environment.apiUrl}/auth/userInfo`, token);
+        }),
+      )
+      .pipe(
+        map((user) => {
+          this.storage.set(USER_KEY, { ...user.name, id: user.id, login: user.login });
+          this.isAuth.next(true);
+        }),
+      );
   }
 
   logout(): void {

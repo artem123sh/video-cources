@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { VideoCoursesService } from '../../services/video-courses.service';
 import { Course } from '../../shared/models/course.model';
 
@@ -18,26 +19,34 @@ export class VideoCoursesEditComponent implements OnInit, OnDestroy {
 
   public course: Course;
 
-  private id: string;
+  private id: number;
 
-  private sub: Subscription;
+  private subs = new Subscription();
 
   ngOnInit(): void {
-    this.sub = this.activeRoute.params.subscribe((params) => {
-      const course = this.videoCoursesService.getCourseById(params.id);
-      if (course) {
-        this.id = params.id;
-        this.course = course;
-      }
-    });
+    const sub = this.activeRoute.params
+      .pipe(
+        switchMap((params: Params) => {
+          this.id = parseInt(params.id, 10);
+          return this.videoCoursesService.getCourseById(params.id);
+        }),
+      )
+      .subscribe((course) => {
+        if (course) {
+          this.course = course;
+        }
+      });
+    this.subs.add(sub);
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.subs.unsubscribe();
   }
 
   public handleSave(course: Course): void {
-    this.videoCoursesService.updateCourse({ ...course, id: this.id });
-    this.router.navigate(['..']);
+    const sub = this.videoCoursesService.updateCourse({ ...course, id: this.id }).subscribe(() => {
+      this.router.navigate(['..']);
+    });
+    this.subs.add(sub);
   }
 }
