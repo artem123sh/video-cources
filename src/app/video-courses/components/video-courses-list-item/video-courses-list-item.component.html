@@ -15,7 +15,7 @@
   <mat-card-content>
     <div class="description">{{course.description}}</div>
     <div class="actions-container">
-      <button class="action-btn" mat-flat-button color="primary" [routerLink]="course.id">
+      <button class="action-btn" mat-flat-button color="primary" [routerLink]="course.id.toString()">
         <mat-icon class="action-icon">edit</mat-icon>
         Edit
       </button>

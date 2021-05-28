@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'vc-video-courses-load-more',
@@ -6,8 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./video-courses-load-more.component.scss'],
 })
 export class VideoCoursesLoadMoreComponent {
-  // eslint-disable-next-line class-methods-use-this
+  @Output()
+  public loadMore = new EventEmitter();
+
   public handleLoadMoreClick() {
-    console.log('Load More clicked');
+    this.loadMore.emit();
   }
 }

@@ -19,7 +19,7 @@ export class HeaderComponent {
     this.sub = this.authService.isAuthenticated.subscribe((isAuthenticated) => {
       if (isAuthenticated) {
         const user = this.authService.getUserInfo();
-        this.userName = `${user.firstName} ${user.lastName}`;
+        this.userName = `${user.first} ${user.last}`;
       } else {
         this.userName = '';
       }

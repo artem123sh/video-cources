@@ -14,6 +14,7 @@ import { VideoCoursesSearchComponent } from './components/video-courses-search/v
 import { VideoCoursesLoadMoreComponent } from './components/video-courses-load-more/video-courses-load-more.component';
 import { HourMinutesDuration } from './components/video-courses-list-item/hh-mm-duration.pipe';
 import { DateObjectPipe } from './components/video-courses-edit/date-object.pipe';
+import { AuthorsPipe } from './components/video-courses-edit/authors.pipe';
 import { HighlightBordersDirective } from './components/video-courses-list-item/highlight-borders.directive';
 import { VideoCoursesNoDataComponent } from './components/video-courses-no-data/video-courses-no-data.component';
 import { FilterPipe } from './components/filter.pipe';
@@ -35,6 +36,7 @@ import { VideoCoursesEditComponent } from './components/video-courses-edit/video
     SortPipe,
     FilterPipe,
     DateObjectPipe,
+    AuthorsPipe,
     VideoCoursesFormComponent,
     VideoCoursesAddNewComponent,
     VideoCoursesEditComponent,
