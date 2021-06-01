@@ -1,0 +1,14 @@
+<div class="container">
+    <mat-card>
+        <mat-card-title>Edit course</mat-card-title>
+        <mat-card-content>
+            <vc-video-courses-form 
+                [title]="course.title"
+                [description]="course.description"
+                [duration]="course.duration.toString()"
+                [date]="course.createdDate | dateObject"
+                [authors]="course.authors"
+                (handleSave)="handleSave($event)"></vc-video-courses-form>
+        </mat-card-content>
+    </mat-card>
+</div>

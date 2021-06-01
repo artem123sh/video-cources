@@ -1,7 +1,6 @@
 <vc-header></vc-header>
-<div class="main-container">
-    <vc-breadcrumbs *vcIfAuthenticated="true"></vc-breadcrumbs>
-    <vc-video-courses *vcIfAuthenticated="true"></vc-video-courses>
-    <vc-login *vcIfAuthenticated="false"></vc-login>
-</div>
+    <section class="main-container">
+        <vc-breadcrumbs *vcIfAuthenticated="true"></vc-breadcrumbs>
+        <router-outlet></router-outlet>
+    </section>
 <vc-footer></vc-footer>

@@ -22,6 +22,7 @@ export class VideoCoursesService {
           'tristique velit hendrerit vulputate. Nam vestibulum tempus leo nec vestibulum. Vivamus varius ac ' +
           'ibero ac interdum. Sed magna nunc, rutrum vitae congue iaculis, condimentum ut mi.',
         isTopRated: false,
+        authors: '',
       },
       {
         id: 'f204a102-e1dd-4433-8daa-ade536eef15e',
@@ -35,6 +36,7 @@ export class VideoCoursesService {
           'tristique velit hendrerit vulputate. Nam vestibulum tempus leo nec vestibulum. Vivamus varius ac ' +
           'ibero ac interdum. Sed magna nunc, rutrum vitae congue iaculis, condimentum ut mi.',
         isTopRated: true,
+        authors: '',
       },
       {
         id: '7a32b000-df88-4518-92c7-6bd42e557323',
@@ -48,6 +50,7 @@ export class VideoCoursesService {
           'tristique velit hendrerit vulputate. Nam vestibulum tempus leo nec vestibulum. Vivamus varius ac ' +
           'ibero ac interdum. Sed magna nunc, rutrum vitae congue iaculis, condimentum ut mi.',
         isTopRated: false,
+        authors: '',
       },
     ];
   }
@@ -72,7 +75,6 @@ export class VideoCoursesService {
   }
 
   public removeCourse(courseId: string): void {
-    console.log(courseId, 'here');
     this.courses = this.courses.filter(({ id }) => id !== courseId);
   }
 }

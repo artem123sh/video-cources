@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'vc-video-courses-form',
@@ -6,18 +6,20 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./video-courses-form.component.scss'],
 })
 export class VideoCoursesFormComponent {
+  @Input()
   public title: string;
 
+  @Input()
   public description: string;
 
+  @Input()
   public duration: string;
 
+  @Input()
   public date: Date;
 
+  @Input()
   public authors: string;
-
-  @Output()
-  public handleClose = new EventEmitter();
 
   @Output()
   public handleSave = new EventEmitter();
@@ -33,9 +35,5 @@ export class VideoCoursesFormComponent {
       isTopRated: false,
     };
     this.handleSave.emit(course);
-  }
-
-  public cancel() {
-    this.handleClose.emit();
   }
 }
