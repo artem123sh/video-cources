@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { LoaderService } from 'src/app/core/services/loader.service';
 import { VideoCoursesService } from '../../services/video-courses.service';
 
 import { Course } from '../../shared/models/course.model';
@@ -11,7 +12,11 @@ import { Course } from '../../shared/models/course.model';
   styleUrls: ['./video-courses-add-new.component.scss'],
 })
 export class VideoCoursesAddNewComponent implements OnDestroy {
-  constructor(private videoCoursesService: VideoCoursesService, private router: Router) {}
+  constructor(
+    private videoCoursesService: VideoCoursesService,
+    private router: Router,
+    private loaderService: LoaderService,
+  ) {}
 
   private sub: Subscription;
 
@@ -19,11 +24,8 @@ export class VideoCoursesAddNewComponent implements OnDestroy {
     this.sub.unsubscribe();
   }
 
-  public addCourse(course: Omit<Course, 'id'>) {
-    this.videoCoursesService.createItem(course);
-  }
-
   public handleSave(course: Course) {
+    this.loaderService.setLoading(true);
     this.sub = this.videoCoursesService.createItem(course).subscribe(() => {
       this.router.navigate(['..']);
     });

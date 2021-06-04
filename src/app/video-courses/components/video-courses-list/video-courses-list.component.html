@@ -6,7 +6,7 @@
 ></vc-video-courses-list-item>
 <vc-video-courses-load-more
   (loadMore)="(loadMore())"
-  *ngIf="!isFullyLoaded; else elseBlock"
+  *ngIf="!isFullyLoaded && courses.length; else elseBlock"
 ></vc-video-courses-load-more>
 <ng-template #elseBlock>
   <vc-video-courses-no-data *ngIf="!courses.length"></vc-video-courses-no-data>

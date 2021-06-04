@@ -37,7 +37,7 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         throttleTime(300),
       )
-      .subscribe((text) => this.getVideoCourses(text));
+      .subscribe((text) => this.serachVideoCourses(text));
     this.subs.add(searchObservable);
   }
 
@@ -48,6 +48,7 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
 
   public deleteCourse(courseId: string) {
     if (window.confirm('Do you really want to delete this course?')) {
+      this.loadingService.setLoading(true);
       const removeSub = this.videoCoursesService.removeCourse(courseId).subscribe(() => {
         this.getVideoCourses();
       });
@@ -60,6 +61,7 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
+    this.loadingService.setLoading(true);
     const getSub = this.videoCoursesService
       .getCourses(this.courses.length, this.coursesChunkSize)
       .subscribe((courses) => {
@@ -67,13 +69,23 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
           this.isFullyLoaded = true;
         }
         this.courses = [...this.courses, ...courses];
+        this.loadingService.setLoading(false);
       });
     this.subs.add(getSub);
   }
 
-  private getVideoCourses(searchCriteria: string = '') {
+  private serachVideoCourses(searchCriteria: string) {
     const sub = this.videoCoursesService.getCourses(0, this.coursesChunkSize, searchCriteria).subscribe((courses) => {
       this.courses = courses;
+    });
+    this.subs.add(sub);
+  }
+
+  private getVideoCourses() {
+    this.loadingService.setLoading(true);
+    const sub = this.videoCoursesService.getCourses(0, this.coursesChunkSize).subscribe((courses) => {
+      this.courses = courses;
+      this.loadingService.setLoading(false);
     });
     this.subs.add(sub);
   }
