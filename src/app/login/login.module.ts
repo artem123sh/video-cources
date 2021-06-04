@@ -11,6 +11,6 @@ import { LoginRoutingModule } from './login-routing.module';
 @NgModule({
   declarations: [IfAuthenticatedDirective, LoginComponent],
   exports: [IfAuthenticatedDirective],
-  imports: [CommonModule, MatButtonModule, MatCardModule, MatFormFieldModule, FormsModule, LoginRoutingModule ],
+  imports: [CommonModule, MatButtonModule, MatCardModule, MatFormFieldModule, FormsModule, LoginRoutingModule],
 })
 export class LoginModule {}

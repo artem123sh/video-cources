@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+import { filter, distinctUntilChanged, throttleTime } from 'rxjs/operators';
+import { LoaderService } from 'src/app/core/services/loader.service';
 import { VideoCoursesService } from '../../services/video-courses.service';
 import { Course } from '../../shared/models/course.model';
 
@@ -19,18 +19,26 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
 
   private coursesChunkSize = 3;
 
-  constructor(
-    private videoCoursesService: VideoCoursesService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
+  private searchSubject: Subject<string>;
+
+  constructor(private videoCoursesService: VideoCoursesService, private loadingService: LoaderService) {}
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.searchSubject = new Subject<string>();
     this.getVideoCourses();
+    this.loadingService.setLoading(true);
+    const searchObservable = this.searchSubject
+      .pipe(
+        filter((text: string) => text === '' || (!!text && text.length > 2)),
+        distinctUntilChanged(),
+        throttleTime(300),
+      )
+      .subscribe((text) => this.serachVideoCourses(text));
+    this.subs.add(searchObservable);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -40,6 +48,7 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
 
   public deleteCourse(courseId: string) {
     if (window.confirm('Do you really want to delete this course?')) {
+      this.loadingService.setLoading(true);
       const removeSub = this.videoCoursesService.removeCourse(courseId).subscribe(() => {
         this.getVideoCourses();
       });
@@ -48,16 +57,11 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
   }
 
   public search(searchCriteria: string) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        search: searchCriteria || null,
-      },
-      queryParamsHandling: 'merge',
-    });
+    this.searchSubject.next(searchCriteria);
   }
 
   public loadMore() {
+    this.loadingService.setLoading(true);
     const getSub = this.videoCoursesService
       .getCourses(this.courses.length, this.coursesChunkSize)
       .subscribe((courses) => {
@@ -65,16 +69,24 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
           this.isFullyLoaded = true;
         }
         this.courses = [...this.courses, ...courses];
+        this.loadingService.setLoading(false);
       });
     this.subs.add(getSub);
   }
 
+  private serachVideoCourses(searchCriteria: string) {
+    const sub = this.videoCoursesService.getCourses(0, this.coursesChunkSize, searchCriteria).subscribe((courses) => {
+      this.courses = courses;
+    });
+    this.subs.add(sub);
+  }
+
   private getVideoCourses() {
-    const sub = this.route.queryParams
-      .pipe(switchMap((params: Params) => this.videoCoursesService.getCourses(0, this.coursesChunkSize, params.search)))
-      .subscribe((courses) => {
-        this.courses = courses;
-      });
+    this.loadingService.setLoading(true);
+    const sub = this.videoCoursesService.getCourses(0, this.coursesChunkSize).subscribe((courses) => {
+      this.courses = courses;
+      this.loadingService.setLoading(false);
+    });
     this.subs.add(sub);
   }
 }

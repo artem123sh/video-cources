@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/login/services/auth.service';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'vc-header',
@@ -9,7 +10,7 @@ import { AuthService } from 'src/app/login/services/auth.service';
   styleUrls: ['./header.component.scss', '../shared/shared.style.scss'],
 })
 export class HeaderComponent {
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private loaderService: LoaderService) {}
 
   private sub: Subscription;
 
@@ -17,12 +18,14 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.sub = this.authService.isAuthenticated.subscribe((isAuthenticated) => {
+      this.loaderService.setLoading(true);
       if (isAuthenticated) {
         const user = this.authService.getUserInfo();
         this.userName = `${user.first} ${user.last}`;
       } else {
         this.userName = '';
       }
+      this.loaderService.setLoading(false);
     });
   }
 
