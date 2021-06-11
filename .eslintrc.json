@@ -19,7 +19,8 @@
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "airbnb-typescript/base",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "plugin:ngrx/recommended"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -38,9 +39,17 @@
             "style": "kebab-case"
           }
         ],
-        "max-len": ["error", { "code": 120 }],
+        "max-len": [
+          "error",
+          {
+            "code": 120
+          }
+        ],
         "import/prefer-default-export": "off"
-      }
+      },
+      "plugins": [
+        "ngrx"
+      ]
     },
     {
       "files": [

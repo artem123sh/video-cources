@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { LoaderService } from 'src/app/core/services/loader.service';
 import { VideoCoursesService } from '../../services/video-courses.service';
 import { Course } from '../../shared/models/course.model';
+import { editCourse } from '../../state/courses.actions';
 
 @Component({
   selector: 'vc-video-courses-edit',
@@ -15,8 +16,7 @@ export class VideoCoursesEditComponent implements OnInit, OnDestroy {
   constructor(
     private videoCoursesService: VideoCoursesService,
     private activeRoute: ActivatedRoute,
-    private router: Router,
-    private loaderService: LoaderService,
+    private store: Store,
   ) {}
 
   public course: Course;
@@ -26,7 +26,6 @@ export class VideoCoursesEditComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
 
   ngOnInit(): void {
-    this.loaderService.setLoading(true);
     const sub = this.activeRoute.params
       .pipe(
         switchMap((params: Params) => {
@@ -37,7 +36,6 @@ export class VideoCoursesEditComponent implements OnInit, OnDestroy {
       .subscribe((course) => {
         if (course) {
           this.course = course;
-          this.loaderService.setLoading(false);
         }
       });
     this.subs.add(sub);
@@ -48,11 +46,6 @@ export class VideoCoursesEditComponent implements OnInit, OnDestroy {
   }
 
   public handleSave(course: Course): void {
-    this.loaderService.setLoading(true);
-    const sub = this.videoCoursesService.updateCourse({ ...course, id: this.id }).subscribe(() => {
-      this.router.navigate(['..']);
-      this.loaderService.setLoading(false);
-    });
-    this.subs.add(sub);
+    this.store.dispatch(editCourse({ course: { ...course, id: this.id } }));
   }
 }

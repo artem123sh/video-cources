@@ -1,32 +1,31 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/login/services/auth.service';
-import { LoaderService } from '../../services/loader.service';
+import { User } from 'src/app/login/shared/models/user.model';
+import { logout } from 'src/app/login/state/auth.actions';
 
 @Component({
   selector: 'vc-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss', '../shared/shared.style.scss'],
 })
-export class HeaderComponent {
-  constructor(private router: Router, private authService: AuthService, private loaderService: LoaderService) {}
+export class HeaderComponent implements OnInit, OnDestroy {
+  constructor(private store: Store<{ auth: { user: User } }>) {}
 
   private sub: Subscription;
 
   public userName: string;
 
   ngOnInit(): void {
-    this.sub = this.authService.isAuthenticated.subscribe((isAuthenticated) => {
-      this.loaderService.setLoading(true);
-      if (isAuthenticated) {
-        const user = this.authService.getUserInfo();
-        this.userName = `${user.first} ${user.last}`;
-      } else {
-        this.userName = '';
-      }
-      this.loaderService.setLoading(false);
-    });
+    this.sub = this.store
+      .select(({ auth: { user } }) => user)
+      .subscribe((user) => {
+        if (user) {
+          this.userName = `${user.first} ${user.last}`;
+        } else {
+          this.userName = '';
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -34,7 +33,6 @@ export class HeaderComponent {
   }
 
   public logout(): void {
-    this.authService.logout();
-    this.router.navigate(['login']);
+    this.store.dispatch(logout());
   }
 }

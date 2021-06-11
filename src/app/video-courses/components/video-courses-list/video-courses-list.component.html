@@ -1,13 +1,13 @@
 <vc-video-courses-search (searchCourse)="search($event)"></vc-video-courses-search>
 <vc-video-courses-list-item
-  *ngFor="let course of courses; trackBy: identify"
+  *ngFor="let course of courses$ | async; trackBy: identify"
   [course]="course"
   (deleteCourse)="deleteCourse($event)"
 ></vc-video-courses-list-item>
 <vc-video-courses-load-more
   (loadMore)="(loadMore())"
-  *ngIf="!isFullyLoaded && courses.length; else elseBlock"
+  *ngIf="canLoadMore$ | async; else noData"
 ></vc-video-courses-load-more>
-<ng-template #elseBlock>
-  <vc-video-courses-no-data *ngIf="!courses.length"></vc-video-courses-no-data>
+<ng-template #noData>
+  <vc-video-courses-no-data *ngIf="!(courses$ | async)?.length"></vc-video-courses-no-data>
 </ng-template>

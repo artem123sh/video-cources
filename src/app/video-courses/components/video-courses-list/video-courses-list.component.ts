@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Subscription, Subject, Observable } from 'rxjs';
 import { filter, distinctUntilChanged, throttleTime } from 'rxjs/operators';
-import { LoaderService } from 'src/app/core/services/loader.service';
-import { VideoCoursesService } from '../../services/video-courses.service';
 import { Course } from '../../shared/models/course.model';
+import { getCourses, loadMore, deleteCourse } from '../../state/courses.actions';
 
 @Component({
   selector: 'vc-video-courses-list',
@@ -15,13 +15,13 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
 
   public courses: Course[] = [];
 
-  public isFullyLoaded = false;
-
-  private coursesChunkSize = 3;
-
   private searchSubject: Subject<string>;
 
-  constructor(private videoCoursesService: VideoCoursesService, private loadingService: LoaderService) {}
+  constructor(private store: Store<{ courses: { courses: Course[]; canLoadMore: boolean } }>) {}
+
+  courses$: Observable<Course[]>;
+
+  canLoadMore$: Observable<boolean>;
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -29,15 +29,16 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.searchSubject = new Subject<string>();
-    this.getVideoCourses();
-    this.loadingService.setLoading(true);
+    this.store.dispatch(getCourses({ start: 0, textFragment: '' }));
+    this.courses$ = this.store.select((state) => state.courses.courses);
+    this.canLoadMore$ = this.store.select((state) => state.courses.canLoadMore);
     const searchObservable = this.searchSubject
       .pipe(
         filter((text: string) => text === '' || (!!text && text.length > 2)),
         distinctUntilChanged(),
         throttleTime(300),
       )
-      .subscribe((text) => this.serachVideoCourses(text));
+      .subscribe((text) => this.store.dispatch(getCourses({ start: 0, textFragment: text })));
     this.subs.add(searchObservable);
   }
 
@@ -48,11 +49,7 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
 
   public deleteCourse(courseId: string) {
     if (window.confirm('Do you really want to delete this course?')) {
-      this.loadingService.setLoading(true);
-      const removeSub = this.videoCoursesService.removeCourse(courseId).subscribe(() => {
-        this.getVideoCourses();
-      });
-      this.subs.add(removeSub);
+      this.store.dispatch(deleteCourse({ courseId }));
     }
   }
 
@@ -61,32 +58,6 @@ export class VideoCoursesListComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
-    this.loadingService.setLoading(true);
-    const getSub = this.videoCoursesService
-      .getCourses(this.courses.length, this.coursesChunkSize)
-      .subscribe((courses) => {
-        if (courses.length < this.coursesChunkSize) {
-          this.isFullyLoaded = true;
-        }
-        this.courses = [...this.courses, ...courses];
-        this.loadingService.setLoading(false);
-      });
-    this.subs.add(getSub);
-  }
-
-  private serachVideoCourses(searchCriteria: string) {
-    const sub = this.videoCoursesService.getCourses(0, this.coursesChunkSize, searchCriteria).subscribe((courses) => {
-      this.courses = courses;
-    });
-    this.subs.add(sub);
-  }
-
-  private getVideoCourses() {
-    this.loadingService.setLoading(true);
-    const sub = this.videoCoursesService.getCourses(0, this.coursesChunkSize).subscribe((courses) => {
-      this.courses = courses;
-      this.loadingService.setLoading(false);
-    });
-    this.subs.add(sub);
+    this.store.dispatch(loadMore());
   }
 }

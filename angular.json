@@ -125,6 +125,7 @@
   },
   "defaultProject": "video-courses",
   "cli": {
+    "analytics": "f210f690-bba5-4e3f-bb31-9042694197ec",
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

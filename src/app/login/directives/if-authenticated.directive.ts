@@ -8,7 +8,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { Store } from '@ngrx/store';
 
 @Directive({
   selector: '[vcIfAuthenticated]',
@@ -21,12 +21,12 @@ export class IfAuthenticatedDirective implements AfterViewInit, OnDestroy {
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private authService: AuthService,
+    private store: Store<{ auth: { isAuth: boolean } }>,
     private cd: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
-    this.sub = this.authService.isAuthenticated.subscribe((isAuthenticated) => this.onAuthChange(isAuthenticated));
+    this.sub = this.store.select(({ auth: { isAuth } }) => isAuth).subscribe((isAuth) => this.onAuthChange(isAuth));
     this.cd.detectChanges();
   }
 
