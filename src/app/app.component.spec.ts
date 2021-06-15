@@ -26,6 +26,9 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('video-courses app is running!');
+    expect(compiled.querySelector('vc-header')).toBeTruthy();
+    expect(compiled.querySelector('vc-header')).toBeTruthy();
+    expect(compiled.querySelector('vc-video-courses')).toBeTruthy();
+    expect(compiled.querySelector('vc-footer')).toBeTruthy();
   });
 });
