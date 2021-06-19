@@ -1,20 +1,37 @@
-<form>
-    <mat-label class="label">Title:</mat-label>
-    <input class="fullWidth" [(ngModel)]="title" required name="title" placeholder="Text input">
-    <mat-label class="label">Description:</mat-label>
-    <textarea class="fullWidth" [(ngModel)]="description" required name="description" placeholder="Add description"></textarea>
-    <mat-label class="label">Duration:</mat-label>
-    <input class="label" [(ngModel)]="duration" required name="duration" type="number" placeholder="minutes">
-    <div>
-        <mat-label class="label">Date:</mat-label>
-        <input class="date-input" [matDatepicker]="picker" [(ngModel)]="date" matInput required name="date" placeholder="MM/DD/YYYY">
-        <mat-datepicker-toggle class="picker" matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker touchUi #picker></mat-datepicker>
-    </div>
-    <mat-label class="label">Authors:</mat-label>
-    <input class="field" [(ngModel)]="authors" required name="authors" placeholder="Start typing">
-    <div class="actions">
-        <button mat-stroked-button [routerLink]="['..']">Cancel</button>
-        <button type="submit" mat-flat-button color="accent" (click)="save()">Save</button>
-    </div>
+<form [formGroup]="courseForm" (ngSubmit)="save()">
+  <mat-label class="label">Title:</mat-label>
+  <input
+    class="fullWidth"
+    [class.error]="formControls.title.touched && formControls.title.errors"
+    name="title"
+    placeholder="Text input"
+    formControlName="title"
+  />
+  <span class="error-message" *ngIf="formControls.title.touched && formControls.title.errors?.required"> * required </span>
+  <span class="error-message" *ngIf="formControls.title.errors?.maxlength"
+    >* max length is {{ formControls.title.errors?.maxlength.requiredLength }}
+  </span>
+  <mat-label class="label">Description:</mat-label>
+  <textarea
+    class="fullWidth"
+    [class.error]="formControls.description.touched && formControls.description.errors"
+    formControlName="description"
+    name="description"
+    placeholder="Add description"
+  ></textarea>
+  <span class="error-message" *ngIf="formControls.description.touched && formControls.description.errors?.required">
+    * required
+  </span>
+  <span class="error-message" *ngIf="formControls.description.errors?.maxlength"
+    >* max length is {{ formControls.description.errors?.maxlength.requiredLength }}
+  </span>
+  <vc-duration formControlName="duration"></vc-duration>
+  <vc-date formControlName="date"></vc-date>
+<vc-authors-autocomplete formControlName="authors" [authors]="this.authors"></vc-authors-autocomplete>
+  <div class="actions">
+    <button type="reset" mat-stroked-button [routerLink]="['..']">Cancel</button>
+    <button type="submit" mat-flat-button color="accent"
+    [disabled]="this.courseForm.invalid"
+    >Save</button>
+  </div>
 </form>

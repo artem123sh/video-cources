@@ -6,14 +6,16 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./video-courses-search.component.scss'],
 })
 export class VideoCoursesSearchComponent {
+  public searchValue: string;
+
   @Output()
   public searchCourse = new EventEmitter();
 
   @Output()
   public addCourse = new EventEmitter();
 
-  public handleSearchChange(event: Event) {
-    this.searchCourse.emit((<HTMLInputElement>event.target).value);
+  public handleSearch() {
+    this.searchCourse.emit(this.searchValue);
   }
 
   public handleAddCourse() {

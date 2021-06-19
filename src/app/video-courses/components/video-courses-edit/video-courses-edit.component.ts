@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { VideoCoursesService } from '../../services/video-courses.service';
-import { Course } from '../../shared/models/course.model';
+import { Author, Course } from '../../shared/models/course.model';
 import { editCourse } from '../../state/courses.actions';
 
 @Component({
@@ -12,37 +12,28 @@ import { editCourse } from '../../state/courses.actions';
   templateUrl: './video-courses-edit.component.html',
   styleUrls: ['./video-courses-edit.component.scss'],
 })
-export class VideoCoursesEditComponent implements OnInit, OnDestroy {
+export class VideoCoursesEditComponent implements OnInit {
   constructor(
     private videoCoursesService: VideoCoursesService,
     private activeRoute: ActivatedRoute,
     private store: Store,
   ) {}
 
-  public course: Course;
+  public course: Observable<Course | null>;
+
+  public authors: Observable<Author[] | null>;
 
   private id: number;
 
-  private subs = new Subscription();
-
   ngOnInit(): void {
-    const sub = this.activeRoute.params
-      .pipe(
-        switchMap((params: Params) => {
-          this.id = parseInt(params.id, 10);
-          return this.videoCoursesService.getCourseById(params.id);
-        }),
-      )
-      .subscribe((course) => {
-        if (course) {
-          this.course = course;
-        }
-      });
-    this.subs.add(sub);
-  }
+    this.course = this.activeRoute.params.pipe(
+      switchMap((params: Params) => {
+        this.id = parseInt(params.id, 10);
+        return this.videoCoursesService.getCourseById(params.id);
+      }),
+    );
 
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
+    this.authors = this.videoCoursesService.getAuthors();
   }
 
   public handleSave(course: Course): void {

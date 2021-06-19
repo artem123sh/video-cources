@@ -1,0 +1,17 @@
+<div [formGroup]="durationForm">
+  <mat-label class="label">Duration:</mat-label>
+  <input
+    formControlName="duration"
+    [class.error]="duration.touched && duration.errors"
+    name="duration"
+    type="number"
+    placeholder="minutes"
+    min="1"
+  />
+  <span
+    class="error-message"
+    *ngIf="duration.touched && duration.errors"
+  >
+    * should be greater than 0
+  </span>
+</div>
