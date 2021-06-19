@@ -1,0 +1,16 @@
+<div [formGroup]="dateForm">
+  <mat-label class="label">Date:</mat-label>
+  <input
+    class="date-input"
+    [matDatepicker]="picker"
+    [class.error]="date.touched && date.errors"
+    matInput
+    required
+    name="date"
+    placeholder="MM/DD/YYYY"
+    formControlName="date"
+  />
+  <mat-datepicker-toggle class="picker" matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker touchUi #picker></mat-datepicker>
+  <span class="error-message" *ngIf="date.touched && date.invalid">* should a valid date</span>
+</div>

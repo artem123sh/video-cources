@@ -1,5 +1,12 @@
 <div class="container">
-  <input type="search" name="q" required="required" (keyup)="handleSearchChange($event)" placeholder="Type to search" />
+  <form #searchForm="ngForm">
+    <input
+      type="search"
+      placeholder="Type to search"
+      [(ngModel)]="searchValue"
+      (ngModelChange)="handleSearch()"
+    >
+  </form>
   <div class="add">
     <button mat-flat-button color="primary" (click)="handleAddCourse()" [routerLink]="['new']">
       <mat-icon>add_circle_outline</mat-icon>

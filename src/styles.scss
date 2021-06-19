@@ -41,6 +41,16 @@ textarea {
   margin-right: 0.5rem;
 }
 
+input.error, textarea.error {
+  border: solid 1px red;
+}
+
 a, a:visited, a:hover, a:active {
   color: inherit;
+}
+
+.error-message {
+  color: red;
+  font-size: smaller;
+  display: block;
 }

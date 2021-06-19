@@ -62,4 +62,8 @@ export class VideoCoursesService {
   public removeCourse(courseId: string): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/courses/${courseId}`);
   }
+
+  public getAuthors(): Observable<Author[]> {
+    return this.http.get<Author[]>(`${environment.apiUrl}/authors`);
+  }
 }

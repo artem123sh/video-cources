@@ -1,17 +1,27 @@
 <div class="container">
-    <mat-card>
-        <mat-card-title>Login</mat-card-title>
-        <mat-card-content>
-            <form>
-                <mat-label>E-mail</mat-label>
-                <input [(ngModel)]="email" matInput required name="email">
-                <mat-label>Password</mat-label>
-                <input [(ngModel)]="password" matInput required type="password" name="password">
-            </form>
-            <div class="actions">
-                <a href="/">Forgot password?</a>
-                <button class="action-btn" mat-flat-button color="accent" (click)="login()">Login</button>
-            </div>
-        </mat-card-content>
-    </mat-card>
+  <mat-card>
+    <mat-card-title>Login</mat-card-title>
+    <mat-card-content>
+      <form #loginForm="ngForm" (ngSubmit)="login()">
+        <mat-label>E-mail</mat-label>
+        <input [(ngModel)]="email" matInput required name="email" [ngClass]="{ error: (error$ | async) }" />
+        <mat-label>Password</mat-label>
+        <input
+          [(ngModel)]="password"
+          matInput
+          required
+          type="password"
+          name="password"
+          [ngClass]="{ error: (error$ | async) }"
+        />
+      </form>
+      <span class="error-message" *ngIf="(error$ | async)">Login or passwords are invalid</span>
+      <div class="actions">
+        <a href="/">Forgot password?</a>
+        <button [disabled]="!loginForm.form.valid" class="action-btn" mat-flat-button color="accent" (click)="login()">
+          Login
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

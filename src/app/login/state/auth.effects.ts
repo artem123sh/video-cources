@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { map, mergeMap, catchError, tap, filter } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { login as loginAction, logout, authenticate, userLoaded } from './auth.actions';
+import { login as loginAction, logout, authenticate, userLoaded, loginError } from './auth.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -30,7 +30,7 @@ export class AuthEffects {
         this.authService.login(action.login, action.password).pipe(
           filter(({ token }) => !!token),
           map(() => authenticate()),
-          catchError(() => EMPTY),
+          catchError(() => of(loginError())),
         ),
       ),
     );

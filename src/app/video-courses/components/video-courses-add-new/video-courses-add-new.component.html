@@ -2,7 +2,7 @@
     <mat-card>
         <mat-card-title>New course</mat-card-title>
         <mat-card-content>
-            <vc-video-courses-form (handleSave)="handleSave($event)"></vc-video-courses-form>
+            <vc-video-courses-form (handleSave)="handleSave($event)" [authors]="authors | async"></vc-video-courses-form>
         </mat-card-content>
     </mat-card>
 </div>

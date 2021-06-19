@@ -26,7 +26,7 @@ export const coursesReducer = createReducer(
     ...state,
     courses,
     loading: false,
-    canLoadMore: true,
+    canLoadMore: state.count === courses.length,
   })),
   on(getCourses, (state) => ({ ...state, loading: true })),
   on(loadedMoreCourses, (state, { courses: newCourses }) => ({

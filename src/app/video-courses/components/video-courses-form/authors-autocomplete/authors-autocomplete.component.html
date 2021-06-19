@@ -1,0 +1,32 @@
+<div [formGroup]="authorsForm">
+  <mat-label class="label">Authors:</mat-label>
+  <mat-chip-list #chipList aria-label="Authors selection" formArrayName="authors">
+    <mat-chip
+      *ngFor="let author of authorsFormArray.controls"
+      [selectable]="selectable"
+      [removable]="removable"
+      (removed)="remove(author.value.id)"
+    >
+      {{ author.value.name }}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+    <input
+      [class.error]="authorsFormArray.touched && authorsFormArray.errors"
+      placeholder="Start typing"
+      #AuthorInput
+      [formControl]="authorsCtrl"
+      (blur)="onBlur()"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur"
+    />
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let author of filteredAuthors | async" [value]="author.id">
+      <mat-checkbox color="primary"></mat-checkbox>
+      {{ author.name }}
+    </mat-option>
+  </mat-autocomplete>
+  <span class="error-message" *ngIf="authorsForm.touched && authorsForm.invalid">* should have at least one author</span>
+</div>

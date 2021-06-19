@@ -5,6 +5,6 @@ import { Author } from '../../shared/models/course.model';
 export class AuthorsPipe implements PipeTransform {
   // eslint-disable-next-line class-methods-use-this
   transform(authors: Author[] | undefined): string {
-    return authors ? authors.map(({ name, lastName }) => `${name} ${lastName}`).join(', ') : '';
+    return authors ? authors.map(({ name }) => `${name}`).join(', ') : '';
   }
 }
